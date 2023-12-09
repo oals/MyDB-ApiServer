@@ -4,10 +4,12 @@ import com.project.MyDBApiServer.dto.DBInfoDTO;
 import com.project.MyDBApiServer.service.MyDBApiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +33,7 @@ public class MyDBApiRestController {
 
 
     @GetMapping("/connectDB")
-    public Map<String, Boolean> connectDB(DBInfoDTO dbInfoDTO){
-
+    public  ResponseEntity< Map<String, Boolean>> connectDB(DBInfoDTO dbInfoDTO){
 
         log.info(dbInfoDTO);
 
@@ -41,7 +42,9 @@ public class MyDBApiRestController {
         Map<String, Boolean> map = new HashMap<>();
         map.put("connectState", DBchk);
 
-        return map;
+
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
 
     }
 
