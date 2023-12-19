@@ -98,11 +98,60 @@ public class MyDBApiServiceImpl implements MyDBApiService{
                 query = "SELECT table_name FROM user_tables;";
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
 
+                String query2 = "CREATE TABLE employees (" +
+                        "    id NUMBER," +
+                        "    name VARCHAR2(100)," +
+                        "    salary NUMBER," +
+                        "    hire_date DATE" +
+                        ")";
+                Statement stmt = conn.createStatement();
+                stmt.execute(query2);
+
+                String query3 = "CREATE TABLE test (" +
+                        "    id NUMBER," +
+                        "    name VARCHAR2(100)," +
+                        "    salary NUMBER," +
+                        "    hire_date DATE" +
+                        ")";
+                Statement stmt2 = conn.createStatement();
+                stmt2.execute(query3);
+
+
+                String query4 = "CREATE TABLE phoneDB (" +
+                        "    id NUMBER," +
+                        "    name VARCHAR2(100)," +
+                        "    salary NUMBER," +
+                        "    hire_date DATE" +
+                        ")";
+                Statement stmt3 = conn.createStatement();
+                stmt3.execute(query4);
+
+
+                String query5 = "CREATE TABLE playInfo (" +
+                        "    id NUMBER," +
+                        "    name VARCHAR2(100)," +
+                        "    salary NUMBER," +
+                        "    hire_date DATE" +
+                        ")";
+                Statement stmt4 = conn.createStatement();
+                stmt4.execute(query5);
+
+
+                String query6 = "CREATE TABLE money (" +
+                        "    id NUMBER," +
+                        "    name VARCHAR2(100)," +
+                        "    salary NUMBER," +
+                        "    hire_date DATE" +
+                        ")";
+                Statement stmt5 = conn.createStatement();
+                stmt5.execute(query6);
+
+
             }
 
 
         } catch (SQLException e) {
-
+            log.info(e.getMessage());
         }
 
 
