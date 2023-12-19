@@ -134,15 +134,27 @@ public class MyDBApiServiceImpl implements MyDBApiService{
         List<String> columnNameList = new ArrayList<>();
         List<List<String>> dataList = new ArrayList<>();
 
-        try {
-            conn = DriverManager.getConnection(dbInfoDTO.getUrl() + dbInfoDTO.getDbName() , dbInfoDTO.getId(), dbInfoDTO.getPswd());
+        String query = "";
+        String query2 = "";
 
+
+        try {
+            if(dbInfoDTO.getDbName().equals("MariaDB")){
+                conn = DriverManager.getConnection(dbInfoDTO.getUrl() + dbInfoDTO.getDbName() , dbInfoDTO.getId(), dbInfoDTO.getPswd());
+                query = "SELECT column_name FROM information_schema.columns WHERE table_name ='"  + dbInfoDTO.getTableName() + "'";
+                query2 = "SELECT * from " + dbInfoDTO.getTableName();
+
+
+            }else{
+                conn = DriverManager.getConnection(dbInfoDTO.getUrl(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
+                query = "SELECT column_name FROM all_tab_columns WHERE table_name ='"  + dbInfoDTO.getTableName().toUpperCase() + "'";
+                query2 = "SELECT * FROM " + dbInfoDTO.getTableName();
+            }
         } catch (SQLException e) {
 
         }
 
-        String query = "SELECT column_name FROM information_schema.columns WHERE table_name ='"  + dbInfoDTO.getTableName() + "'";
-        String query2 = "SELECT * from " + dbInfoDTO.getTableName();
+
 
         try {
             Statement stmt = conn.createStatement();
