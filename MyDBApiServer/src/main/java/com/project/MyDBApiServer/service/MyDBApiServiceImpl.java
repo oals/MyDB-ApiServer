@@ -95,7 +95,7 @@ public class MyDBApiServiceImpl implements MyDBApiService{
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl() + dbInfoDTO.getDbName(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
 
             }else{
-                query = "SELECT table_name FROM user_tables;";
+                query = "SELECT table_name FROM user_tables";
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
 
             }
