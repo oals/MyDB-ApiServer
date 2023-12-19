@@ -57,11 +57,6 @@ public class MyDBApiServiceImpl implements MyDBApiService{
 
         String query = "SHOW DATABASES";
 
-        if(dbInfoDTO.getDbName().equals("MariaDB")){
-
-        }else{
-
-        }
 
 
         try {
@@ -96,7 +91,15 @@ public class MyDBApiServiceImpl implements MyDBApiService{
 
         }
 
-        String query = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema ='" +  dbInfoDTO.getDbName() + "'";
+        String query = "";
+
+        if(dbInfoDTO.getDbName().equals("MariaDB")){
+            query = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema ='" +  dbInfoDTO.getDbName() + "'";
+
+        }else{
+            query = "SELECT table_name FROM user_tables;";
+        }
+
 
         try {
             Statement stmt = conn.createStatement();
