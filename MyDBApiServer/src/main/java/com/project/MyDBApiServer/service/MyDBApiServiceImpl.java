@@ -84,21 +84,27 @@ public class MyDBApiServiceImpl implements MyDBApiService{
         Connection conn = null;
         List<String> TableNameList = new ArrayList<>();
 
+        String query = "";
+
+
+
         try {
-            conn = DriverManager.getConnection(dbInfoDTO.getUrl() + dbInfoDTO.getDbName(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
+
+            if(dbInfoDTO.getDbName().equals("MariaDB")){
+                query = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema ='" +  dbInfoDTO.getDbName() + "'";
+                conn = DriverManager.getConnection(dbInfoDTO.getUrl() + dbInfoDTO.getDbName(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
+
+            }else{
+                query = "SELECT table_name FROM user_tables;";
+                conn = DriverManager.getConnection(dbInfoDTO.getUrl(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
+
+            }
+
 
         } catch (SQLException e) {
 
         }
 
-        String query = "";
-
-        if(dbInfoDTO.getDbName().equals("MariaDB")){
-            query = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema ='" +  dbInfoDTO.getDbName() + "'";
-
-        }else{
-            query = "SELECT table_name FROM user_tables;";
-        }
 
 
         try {
