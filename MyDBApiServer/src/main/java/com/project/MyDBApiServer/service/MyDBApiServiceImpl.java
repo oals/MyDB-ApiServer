@@ -57,6 +57,13 @@ public class MyDBApiServiceImpl implements MyDBApiService{
 
         String query = "SHOW DATABASES";
 
+        if(dbInfoDTO.getDbName().equals("MariaDB")){
+
+        }else{
+
+        }
+
+
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
