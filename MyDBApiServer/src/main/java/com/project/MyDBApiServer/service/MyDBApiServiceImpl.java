@@ -90,16 +90,18 @@ public class MyDBApiServiceImpl implements MyDBApiService{
 
         try {
 
-            if(dbInfoDTO.getDbName().equals("MariaDB")){
+              if(dbInfoDTO.getUrl().contains("jdbc:mariadb://")){
                 query = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema ='" +  dbInfoDTO.getDbName() + "'";
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl() + dbInfoDTO.getDbName(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
 
-            }else{
-                query = "SELECT table_name FROM user_tables";
+            }else if(dbInfoDTO.getUrl().contains("jdbc:oracle:thin:@")){
+                query = "SELECT table_name FROM user_tables;";
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
 
-            }
 
+            }else{
+                log.info("오류");
+            }
 
         } catch (SQLException e) {
 
@@ -139,16 +141,18 @@ public class MyDBApiServiceImpl implements MyDBApiService{
 
 
         try {
-            if(dbInfoDTO.getDbName().equals("MariaDB")){
+             if(dbInfoDTO.getUrl().contains("jdbc:mariadb://")){
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl() + dbInfoDTO.getDbName() , dbInfoDTO.getId(), dbInfoDTO.getPswd());
                 query = "SELECT column_name FROM information_schema.columns WHERE table_name ='"  + dbInfoDTO.getTableName() + "'";
                 query2 = "SELECT * from " + dbInfoDTO.getTableName();
 
 
-            }else{
+            }else if(dbInfoDTO.getUrl().contains("jdbc:oracle:thin:@")){
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
                 query = "SELECT column_name FROM all_tab_columns WHERE table_name ='"  + dbInfoDTO.getTableName().toUpperCase() + "'";
                 query2 = "SELECT * FROM " + dbInfoDTO.getTableName();
+            }else{
+                log.info("오류");
             }
         } catch (SQLException e) {
 
