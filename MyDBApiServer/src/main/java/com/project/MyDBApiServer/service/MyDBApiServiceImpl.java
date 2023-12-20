@@ -90,16 +90,15 @@ public class MyDBApiServiceImpl implements MyDBApiService{
 
         try {
 
-            log.info("url 주소 테스트" + dbInfoDTO.getUrl());
-            
+        
             if(dbInfoDTO.getUrl().contains("jdbc:mariadb://")){
-                log.info("마리아디비");
+                
                 query = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE' AND table_schema ='" +  dbInfoDTO.getDbName() + "'";
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl() + dbInfoDTO.getDbName(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
 
             }else if(dbInfoDTO.getUrl().contains("jdbc:oracle:thin:@")){
-                log.info("오라클디비");
-                query = "SELECT table_name FROM user_tables;";
+                
+                query = "SELECT table_name FROM user_tables";
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
 
 
