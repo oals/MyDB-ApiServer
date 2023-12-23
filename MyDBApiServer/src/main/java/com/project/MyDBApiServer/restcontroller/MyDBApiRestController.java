@@ -93,6 +93,21 @@ public class MyDBApiRestController {
 
         return map;
     }
+    @GetMapping("selectData")
+    public Map<String, List<List<String>>> selectData(DBInfoDTO dbInfoDTO,String searchData,String columnName){
+
+        log.info(dbInfoDTO);
+        log.info(searchData);
+        log.info(columnName);
+
+        List<List<String>> list =  myDBApiService.selectData(dbInfoDTO,searchData,columnName);
+
+
+        Map<String, List<List<String>>> map = new HashMap<>();
+        map.put("tableList", list);
+
+        return map;
+    }
 
 
 }

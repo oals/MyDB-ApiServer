@@ -93,7 +93,7 @@ public class MyDBApiServiceImpl implements MyDBApiService{
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl() + dbInfoDTO.getDbName(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
 
             }else if(dbInfoDTO.getUrl().contains("jdbc:oracle:thin:@")){
-                query = "SELECT table_name FROM user_tables;";
+                query = "SELECT table_name FROM user_tables";
                 conn = DriverManager.getConnection(dbInfoDTO.getUrl(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
 
 
@@ -191,6 +191,74 @@ public class MyDBApiServiceImpl implements MyDBApiService{
 
         return dataList;
 
+
+
+
+    }
+
+    @Override
+    public List<List<String>> selectData(DBInfoDTO dbInfoDTO,String searchData,String searchColumnName) {
+
+        Connection conn = null;
+        List<String> columnNameList = new ArrayList<>();
+        List<List<String>> dataList = new ArrayList<>();
+
+
+        String query = "";
+        String query2 = "";
+
+
+        try {
+            if(dbInfoDTO.getUrl().contains("jdbc:mariadb://")){
+                conn = DriverManager.getConnection(dbInfoDTO.getUrl() + dbInfoDTO.getDbName() , dbInfoDTO.getId(), dbInfoDTO.getPswd());
+                query = "SELECT column_name FROM information_schema.columns WHERE table_name ='"  + dbInfoDTO.getTableName() + "'";
+                query2 = "SELECT * from " + dbInfoDTO.getTableName() + " where " + searchColumnName + " = '" + searchData + "'";
+
+
+            }else if(dbInfoDTO.getUrl().contains("jdbc:oracle:thin:@")){
+                conn = DriverManager.getConnection(dbInfoDTO.getUrl(), dbInfoDTO.getId(), dbInfoDTO.getPswd());
+                query = "SELECT column_name FROM all_tab_columns WHERE table_name ='"  + dbInfoDTO.getTableName().toUpperCase() + "'";
+                query2 = "SELECT * from " + dbInfoDTO.getTableName() + " where " + searchColumnName + " = '" + searchData + "'";
+
+            }else{
+                log.info("오류");
+            }
+        } catch (SQLException e) {
+
+        }
+
+
+
+
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet columnNameResult = stmt.executeQuery(query);
+
+            while (columnNameResult.next()) {
+                String columnName = columnNameResult.getString("column_name");
+                columnNameList.add(columnName);
+            }
+
+            dataList.add(columnNameList);
+            ResultSet tableDataResult = stmt.executeQuery(query2);
+
+            while (tableDataResult.next()) {
+                List<String> dataList2 = new ArrayList<>();
+
+                for(int i = 0; i < columnNameList.size(); i++){
+                    dataList2.add(tableDataResult.getString(columnNameList.get(i)));
+                }
+
+                dataList.add(dataList2);
+            }
+
+            System.out.println("Query executed successfully!");
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot execute the query!", e);
+        }
+
+
+        return dataList;
 
 
 

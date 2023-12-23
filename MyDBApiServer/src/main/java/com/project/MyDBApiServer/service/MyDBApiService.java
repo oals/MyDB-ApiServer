@@ -19,6 +19,8 @@ public interface MyDBApiService {
     List<List<String>> getTableInfo(DBInfoDTO dbInfoDTO);
 
 
+    List<List<String>> selectData(DBInfoDTO dbInfoDTO,String searchData,String columnName);
+
 
 
 }
